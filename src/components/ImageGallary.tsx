@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Tab, Nav, Button, Form, Container } from 'react-bootstrap';
+import { Row, Col, Tab, Nav, Button, Form } from 'react-bootstrap';
 import '../styles/gallary.css'
 import AddImage from './AddImage';
 import ImageList from './ImageList';
 import Gallary from './Gallary';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faList, faTableCellsLarge, faTrash, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import { ImageFile } from '../interFace/ImageFileInterFace';
+import { faList, faTableCellsLarge, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { ImageFile, PreviewImage } from '../interFace/ImageFileInterFace';
 
 const ImageGallary: React.FC = () => {
     const [show, setShow] = useState(false);
@@ -14,9 +14,8 @@ const ImageGallary: React.FC = () => {
     const [checkedImages, setCheckedImages] = useState<string[]>([]);
     const [searchValue, setSearchValue] = useState<string>("");
 
-
-    let preview: string[] = []
-
+ 
+    let preview: PreviewImage[] = []
     const getData = async () => {
         try {
             const response = await fetch("http://localhost:3001/images");
@@ -37,10 +36,11 @@ const ImageGallary: React.FC = () => {
 
     // image preview
     const getImageFile = () => {
-        const imageFile = images.map((item: any) => preview.push(item.image));
+        const imageFile = images.map((item: any) => preview.push({ image: item.image, id: item.id, name:item.name, size:item.size }));
         return imageFile;
     };
     getImageFile();
+    console.log(preview, "dhdhdhhdhddhdhdhdh")
 
     const handleDeleteImage = async (index: number) => {
         try {
@@ -62,6 +62,7 @@ const ImageGallary: React.FC = () => {
 
     const handleCheckChange = (imageId: string) => {
         const updatedCheckedImages = checkedImages.includes(imageId) ? checkedImages.filter((id) => id !== imageId) : [...checkedImages, imageId];
+        console.log(updatedCheckedImages, "checked ids")
         setCheckedImages(updatedCheckedImages);
     };
 
@@ -129,11 +130,13 @@ const ImageGallary: React.FC = () => {
                                 setImages={setImages}
                                 handleDeleteImage={handleDeleteImage}
                                 onCheckChange={(imageId: string) => handleCheckChange(imageId)}
+                                checkedImages={checkedImages}
+
                             />
                         </Tab.Pane>
                         <Tab.Pane eventKey="second">
                             <Gallary images={images} preview={preview} handleDeleteImage={handleDeleteImage}
-                                onCheckChange={(imageId: string) => handleCheckChange(imageId)} />
+                                onCheckChange={(imageId: string) => handleCheckChange(imageId)} checkedImages={checkedImages} />
                         </Tab.Pane>
                     </Tab.Content>
                 </Col>

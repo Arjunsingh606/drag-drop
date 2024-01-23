@@ -4,16 +4,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import "../styles/gallary.css";
 import Preview from "./Preview";
-import { ImageFile } from "../interFace/ImageFileInterFace";
+import { ImageFile, PreviewImage } from "../interFace/ImageFileInterFace";
 
 interface ImageProps {
     images: ImageFile[];
-    preview: string[];
+    preview: PreviewImage[];
     handleDeleteImage: (index: number) => void;
     onCheckChange: (imageId: string) => void;
+    checkedImages:string[]
 }
 
-const Gallery: React.FC<ImageProps> = ({ images, preview, handleDeleteImage, onCheckChange }) => {
+const Gallery: React.FC<ImageProps> = ({ images, preview, handleDeleteImage, onCheckChange, checkedImages }) => {
     const [isHovering, setIsHovering] = useState<number | null>(null);
     const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
@@ -41,8 +42,8 @@ const Gallery: React.FC<ImageProps> = ({ images, preview, handleDeleteImage, onC
         <>
             <div className="gallery">
                 {images &&
-                    images.map((item: any, index: number) => (
-                        <div className="image-item" key={index}
+                    images.map((item:any, index:number) => (
+                        <div className="image-item" key={item.id}
                             onMouseOver={() => handleMouseOver(index)}
                             onMouseOut={handleMouseOut}
                         >
@@ -59,12 +60,16 @@ const Gallery: React.FC<ImageProps> = ({ images, preview, handleDeleteImage, onC
                                                         toggleImageSelection(item.id || "");
                                                     }}
                                                 />
-                                                <Button variant="primary" className="delete-icon" onClick={() => handleDeleteImage(index)} >
+                                                {checkedImages.length === 0 && <div>
+                                                    <Button variant="primary" className="delete-icon" onClick={() => handleDeleteImage(index)} >
                                                     <FontAwesomeIcon icon={faTrash} />
                                                 </Button>
+
+                                                </div>}
+                                                
                                             </div>
                                             <div className="preview-button">
-                                                <Preview images={images} preview={preview} index={index} />
+                                                <Preview images={images} preview={preview} id={item.id} />
                                             </div>
 
                                         </div>
@@ -76,9 +81,8 @@ const Gallery: React.FC<ImageProps> = ({ images, preview, handleDeleteImage, onC
                     ))}
 
             </div>
-            {images.length === 0 ? <h4 className="empty-list">Image does not found !!!</h4> : ""}
+            {images.length === 0 && <h4 className="empty-list">Image does not found !!!</h4>}
         </>
-
     );
 };
 

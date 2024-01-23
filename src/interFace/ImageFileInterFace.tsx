@@ -7,3 +7,10 @@ export interface ImageFile {
     type?: string;
     webkitRelativePath?: string;
 }
+
+export interface PreviewImage {
+    image?: string;
+    id?: number;
+    size:number;
+    name?:string;
+}

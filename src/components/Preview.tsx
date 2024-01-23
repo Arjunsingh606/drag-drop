@@ -3,20 +3,21 @@ import { Modal, Button } from "react-bootstrap";
 import "../styles/gallary.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { PreviewImage, ImageFile } from "../interFace/ImageFileInterFace";
 
 interface ImageProps {
-    images: any[];
-    preview: string[];
-    index: number;
+    images: ImageFile[];
+    preview: PreviewImage[];
+    id: number
 }
 
-const Preview: React.FC<ImageProps> = ({ images, preview, index }) => {
+const Preview: React.FC<ImageProps> = ({ images, preview, id }) => {
     const [show, setShow] = useState<boolean>(false);
     const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
     const handleIncreaseSlider = () => {
-        setCurrentImageIndex((prevIndex) =>
-            prevIndex === preview.length - 1 ? 0 : prevIndex + 1
+        setCurrentImageIndex((id) =>
+            id === preview.length - 1 ? 0 : id++
         );
     };
 
@@ -25,21 +26,20 @@ const Preview: React.FC<ImageProps> = ({ images, preview, index }) => {
             prevIndex === 0 ? preview.length - 1 : prevIndex - 1
         );
     };
-
+    console.log(currentImageIndex, "======>080988")
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const handleImageClick = (index: number) => {
+    const handleImageClick = (id: number) => {
         handleShow();
-        setCurrentImageIndex(index);
+        setCurrentImageIndex(id);
     };
-
     return (
         <div>
             <div className="preview-button">
                 <Button
                     variant="primary"
-                    onClick={() => handleImageClick(index)}
+                    onClick={() => handleImageClick(id)}
                     className="drag-drop-modal list-preview-button preview-button"
                 >
                     Preview
@@ -50,25 +50,22 @@ const Preview: React.FC<ImageProps> = ({ images, preview, index }) => {
                     <Modal.Title>Image Preview</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {preview.length > 0 ? (
+                    {preview.length > 0 && (
                         <div className="preview-modal-img">
-                            <img src={preview[currentImageIndex]} alt="Loading" />
+                            {preview && preview.map((elem: PreviewImage) => {
+                                return (
+                                    <div key={elem.id}>
+                                        {elem.id === id && <div>
+                                            <img src={elem.image} alt="Loading" />
+                                            <h5>{elem.name}</h5>
+                                            <h5>{(elem.size / 1024).toFixed(2)} KB</h5>
+                                        </div>}
+                                    </div>
+                                )
+                            })}
                         </div>
-                    ) : (
-                        ""
                     )}
-                    {images &&
-                        images.map((image) => {
-                            return (
-                                <div className="modal-image-name" key={image.id}>
-                                    {preview[currentImageIndex] === image.image ? (
-                                        <h5>{image.name}</h5>
-                                    ) : (
-                                        ""
-                                    )}
-                                </div>
-                            );
-                        })}
+
                 </Modal.Body>
                 <Modal.Footer className="preview-modal-btn">
                     <div className="next-prev-btn">
