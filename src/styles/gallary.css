@@ -17,7 +17,7 @@
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
-  gap: 1.2rem;
+  gap: 2rem;
   padding-top: 1rem;
 }
 .gallary .uploaded-img {
@@ -25,8 +25,8 @@
   max-height: 200px;
   text-align: center;
   border-radius: 10px;
-  border: 1px solid #dbe0eb;
-  position: relative;
+  border: 2px solid #dbe0eb;
+ 
 }
 .uploaded-img img {
   max-width: 100%;
@@ -39,20 +39,33 @@
 .selected-image {
   display: flex;
 }
-.hovered:hover {
-  border: 3px solid #bdc4d3;
+/* vbxcvbnxcvxncv */
+.check-input{
+  position: absolute;
+  top: -70px;
+  left: -120px;
+}
+.check-input input{
+  padding: 8px;
+}
+/* hover effect */
+/* .hovered:hover {
+  border: 2px solid #bdc4d3;
   background-color: #1e2235;
   z-index: 99;
   background: rgb(30 34 53 0.5);
+} */
+.image-item{
+  position: relative;
 }
-.hover-content {
+.hover-content:hover {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 .uploaded-img.selected {
-  border: 3px solid #0b4fe1;
+  border: 2px solid #0b4fe1;
 }
 .checked-option {
   display: flex;

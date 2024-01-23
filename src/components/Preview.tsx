@@ -16,8 +16,8 @@ const Preview: React.FC<ImageProps> = ({ images, preview, id }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
     const handleIncreaseSlider = () => {
-        setCurrentImageIndex((id) =>
-            id === preview.length - 1 ? 0 : id++
+        setCurrentImageIndex((prevIndex) =>
+            prevIndex === preview.length - 1 ? 0 : prevIndex + 1
         );
     };
 
@@ -26,7 +26,6 @@ const Preview: React.FC<ImageProps> = ({ images, preview, id }) => {
             prevIndex === 0 ? preview.length - 1 : prevIndex - 1
         );
     };
-    console.log(currentImageIndex, "======>080988")
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 

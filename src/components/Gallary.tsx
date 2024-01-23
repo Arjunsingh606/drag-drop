@@ -11,7 +11,7 @@ interface ImageProps {
     preview: PreviewImage[];
     handleDeleteImage: (index: number) => void;
     onCheckChange: (imageId: string) => void;
-    checkedImages:string[]
+    checkedImages: string[]
 }
 
 const Gallery: React.FC<ImageProps> = ({ images, preview, handleDeleteImage, onCheckChange, checkedImages }) => {
@@ -42,39 +42,41 @@ const Gallery: React.FC<ImageProps> = ({ images, preview, handleDeleteImage, onC
         <>
             <div className="gallery">
                 {images &&
-                    images.map((item:any, index:number) => (
+                    images.map((item: any, index: number) => (
                         <div className="image-item" key={item.id}
-                            onMouseOver={() => handleMouseOver(index)}
-                            onMouseOut={handleMouseOut}
+                            // onMouseOver={() => handleMouseOver(index)}
+                            // onMouseOut={handleMouseOut}
                         >
                             <div className={`uploaded-img ${isHovering === index ? "hovered" : ""} ${selectedImages.includes(item.id || "") ? "selected" : ""}`} >
                                 <Image src={item?.image} alt="Uploading.." className="img-fluid" />
-                                {isHovering === index && (
+                                {/* {isHovering === index && ( */}
                                     <div className="hover-content">
                                         <div className="hover-item">
-                                            <div className="checked-option">
-                                                <Form.Check
-                                                    checked={selectedImages.includes(item.id || "")}
-                                                    onChange={() => {
-                                                        onCheckChange(item.id);
-                                                        toggleImageSelection(item.id || "");
-                                                    }}
-                                                />
-                                                {checkedImages.length === 0 && <div>
-                                                    <Button variant="primary" className="delete-icon" onClick={() => handleDeleteImage(index)} >
+                                            {checkedImages.length === 0 ? <div className="checked-option"> <Form.Check
+                                                checked={selectedImages.includes(item.id || "")}
+                                                onChange={() => {
+                                                    onCheckChange(item.id);
+                                                    toggleImageSelection(item.id || "");
+                                                }}
+                                            />
+                                                <Button variant="primary" className="delete-icon" onClick={() => handleDeleteImage(index)} >
                                                     <FontAwesomeIcon icon={faTrash} />
-                                                </Button>
-
-                                                </div>}
-                                                
-                                            </div>
-                                            <div className="preview-button">
-                                                <Preview images={images} preview={preview} id={item.id} />
-                                            </div>
-
+                                                </Button></div> : <Form.Check
+                                                checked={selectedImages.includes(item.id || "")}
+                                                className="check-input"
+                                                onChange={() => {
+                                                    onCheckChange(item.id);
+                                                    toggleImageSelection(item.id || "");
+                                                }}
+                                            />}
                                         </div>
+                                        <div className="preview-button">
+                                            <Preview images={images} preview={preview} id={item.id} />
+                                        </div>
+
+
                                     </div>
-                                )}
+                                {/* // )} */}
                             </div>
                             <p>{item.name}</p>
                         </div>
